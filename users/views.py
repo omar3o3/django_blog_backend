@@ -6,30 +6,36 @@ from .models import NewUser
 from .serializers import UserSerializer
 from rest_framework import status
 
+from rest_framework.permissions import AllowAny
+
 # Create your views here.
+    
 # @api_view(['POST'])
 # def create_user(request):
-#     serializer = UserSerializer(data = request.data)
-#     if serializer.is_valid():
-#         print(serializer)
-#         serializer.save()
-#         # print(request.data['password'])
-#         return Response(serializer.data, status = status.HTTP_200_OK)
-    
+#     rq = request.data
+#     user = NewUser.objects.create(
+#         user_name= rq['user_name'],
+#         email = rq['email'],
+#         first_name = rq['first_name'],
+#         last_name = rq['last_name'],
+#         )
+#     user.set_password(rq['password'])
+#     user.save()
+#     serializer = UserSerializer(user)
+#     return Response(serializer.data)
+
 @api_view(['POST'])
 def create_user(request):
-    rq = request.data
-    user = NewUser.objects.create(
-        user_name= rq['user_name'],
-        email = rq['email'],
-        first_name = rq['first_name'],
-        last_name = rq['last_name'],
-        )
-    user.set_password(rq['password'])
-    user.save()
-    serializer = UserSerializer(user)
-    return Response(serializer.data)
+    permission_classes = [AllowAny]
+    serializer = UserSerializer(data=request.data)
+    if serializer.is_valid():
+        user = serializer.save()
+        if user:
+            json = serializer.data
+            return Response(json, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+
     
 @api_view(['GET'])
 def get_users(request):
