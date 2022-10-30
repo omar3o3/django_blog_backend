@@ -7,12 +7,28 @@ from .serializers import UserSerializer
 from rest_framework import status
 
 # Create your views here.
+# @api_view(['POST'])
+# def create_user(request):
+#     serializer = UserSerializer(data = request.data)
+#     if serializer.is_valid():
+#         print(serializer)
+#         serializer.save()
+#         # print(request.data['password'])
+#         return Response(serializer.data, status = status.HTTP_200_OK)
+    
 @api_view(['POST'])
 def create_user(request):
-    serializer = UserSerializer(data = request.data)
-    if serializer.is_valid():
-        serializer.save()
-        return Response(serializer.data, status = status.HTTP_200_OK)
+    rq = request.data
+    user = NewUser.objects.create(
+        user_name= rq['user_name'],
+        email = rq['email'],
+        first_name = rq['first_name'],
+        last_name = rq['last_name'],
+        )
+    user.set_password(rq['password'])
+    user.save()
+    serializer = UserSerializer(user)
+    return Response(serializer.data)
     
     
 @api_view(['GET'])
