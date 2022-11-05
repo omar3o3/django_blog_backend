@@ -2,6 +2,9 @@ from rest_framework import serializers
 from .models import NewUser
 import pdb
 
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+
 class UserSerializer(serializers.ModelSerializer):
     
     email = serializers.EmailField(required=True)
@@ -22,5 +25,22 @@ class UserSerializer(serializers.ModelSerializer):
             instance.set_password(password)
         instance.save()
         return instance
+    
+
+class CustomObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+
+        # Add custom claims
+        token['firstName'] = user.first_name
+        token['lastName'] = user.last_name
+        token['userName'] = user.user_name
+        token['email'] = user.email
+
+        return token
+
+# class CustomTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = CustomObtainPairSerializer
             
     
