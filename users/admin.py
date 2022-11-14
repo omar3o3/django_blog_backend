@@ -3,6 +3,7 @@ from .models import NewUser
 from tags.models import Tag
 from blogs.models import Blog
 from comments.models import Comment
+from tagBlogs.models import TagBlog
 
 from django.contrib.auth import get_user_model
 
@@ -13,3 +14,4 @@ admin.site.register(NewUser)
 admin.site.register(Tag)
 admin.site.register(Blog)
 admin.site.register(Comment)
+admin.site.register(TagBlog)
