@@ -7,5 +7,9 @@ class Blog(models.Model):
     user = models.ForeignKey(NewUser, on_delete = models.CASCADE)
     title = models.CharField(max_length = 60)
     content = models.CharField(max_length = 2500)
-    date_posted = models.DateField(default = timezone.now)
-    likes = models.PositiveIntegerField(default=0)
+    # date_posted = models.DateField(default = timezone.now)
+    # likes = models.PositiveIntegerField(default=0)
+    
+    
+    def __str__(self):
+        return f"title: {self.title}, content: {self.content} user: {NewUser.objects.get(pk=self.user.id).user_name}"
