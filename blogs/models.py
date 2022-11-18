@@ -12,8 +12,6 @@ class Blog(models.Model):
     content = models.CharField(max_length = 2500)
     # date_posted = models.DateField(default = timezone.now)
     # likes = models.PositiveIntegerField(default=0)
-    # tags = GenericRelation(TagBlog)
-    # tags = models.CharField(max_length = 60)bl
     
     
     def __str__(self):
