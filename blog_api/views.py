@@ -33,10 +33,8 @@ def test_run(request):
 
 @api_view(['GET'])
 def get_blogs(request):
+    # permission_classes = [IsAuthenticated]
     all_blogs = Blog.objects.all()
-    
-    # blog_serializer = BlogSerializer(all_blogs, many = True)
-    # return Response(blog_serializer.data)
     
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
     return Response(blog_serializer.data)
