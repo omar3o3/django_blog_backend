@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Blog
 from users.models import NewUser
 
-class BlogSerializer(serializers.ModelSerializer):
+class CustomBlogSerializer(serializers.ModelSerializer):
     # user = serializers.PrimaryKeyRelatedField(read_only=True)
     # user_owner = serializers.PrimaryKeyRelatedField(source='NewUser.id', read_only=True)
     # user_owner = serializers.PrimaryKeyRelatedField(source='NewUser', read_only=True)
@@ -11,10 +11,13 @@ class BlogSerializer(serializers.ModelSerializer):
     
     # !!!!! this is the one that will return the username for the owner of the post
     # !!!!! create custom serializer for fetching data in get requests?
+    # user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
+    # tag = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
     user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
-    tag = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
+    tagblog_set = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Blog
-        fields = ['title', 'content', 'id', 'user', '']
+        # fields = ['title', 'content', 'id', 'user', '']
         # fields = "__all__"
+        fields = ['title', 'content', 'id', 'user', 'tagblog_set']
