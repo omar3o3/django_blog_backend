@@ -32,27 +32,28 @@ def test_run(request):
 @api_view(['GET'])
 def get_blogs(request):
     all_blogs = Blog.objects.all()
-    serializer = BlogSerializer(all_blogs, many = True)
-    return Response(serializer.data)
     
-    # blog_serializer = BlogSerializer(all_blogs, many = True)
-    # return Response(blog_serializer.data.tagblog_set.all())
-    # return Response(blog_serializer.data)
+    # serializer = BlogSerializer(all_blogs, many = True)
+    # return Response(serializer.data)
+    
+    blog_serializer = BlogSerializer(all_blogs, many = True)
+    
+    return Response(blog_serializer.data)
 
 
 @api_view(['POST'])
 def create_post(request):
-    # print('-----------------------')
-    # print(request.data)
-    # print('-----------------------')
-    # print(request.data['blog_data'])
-    # print('-----------------------')
-    # print(request.data['tag_data'])
-    # print('-----------------------')
+#     # print('-----------------------')
+#     # print(request.data)
+#     # print('-----------------------')
+#     # print(request.data['blog_data'])
+#     # print('-----------------------')
+#     # print(request.data['tag_data'])
+#     # print('-----------------------')
     blog_data = request.data['blog_data']
     tag_data = request.data['tag_data']
     
-    print(blog_data)
+#     print(blog_data)
     
     blog_serializer = BlogSerializer(data=blog_data)
     if blog_serializer.is_valid():
@@ -67,8 +68,9 @@ def create_post(request):
                 if tagblog_serializer1.is_valid():
                     tagblog_post = tagblog_serializer1.save()
                     if blog_post and tag_post and tagblog_post:
-                        json = [blog_serializer.data , tagblog_serializer1.data]
-                        return Response(json, status=status.HTTP_201_CREATED)
+                        json1 = [blog_serializer.data , tagblog_serializer1.data]
+                        # return Response(json1, status=status.HTTP_201_CREATED)
+                # return Response(json1, status=status.HTTP_201_CREATED)
                     
             else:
                 existing_tag = Tag.objects.get(title=x)
@@ -76,12 +78,18 @@ def create_post(request):
                 if tagblog_serializer2.is_valid():
                     tagblog_post2 = tagblog_serializer2.save()
                     if blog_post and tagblog_post2:
-                        json = [blog_serializer.data , tagblog_serializer2.data]
-                        return Response(json, status=status.HTTP_201_CREATED)
+                        json2 = [blog_serializer.data , tagblog_serializer2.data]
+                        # return Response(json2, status=status.HTTP_201_CREATED)
+                # return Response(json2, status=status.HTTP_201_CREATED)
         # if blog_post:
             # json = blog_serializer.data
             # return Response(json, status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)
     return Response(blog_post.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# @api_view(['POST'])
+# def create_post(request):
+#     pass
     
     
     # !!!! valid for creating ONLY the blog post without tags

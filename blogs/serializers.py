@@ -12,8 +12,18 @@ class BlogSerializer(serializers.ModelSerializer):
     # !!!!! this is the one that will return the username for the owner of the post
     # !!!!! create custom serializer for fetching data in get requests?
     # user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
+    
+    # tagblogs = serializers.SlugRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     slug_field='tagblog_set'
+    # )
+    
+    tagblog_set = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = Blog
         # fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'tag_set']
-        fields = "__all__"
+        # fields = "__all__"
+        
+        fields = ['title', 'content', 'id', 'user', 'tagblog_set']

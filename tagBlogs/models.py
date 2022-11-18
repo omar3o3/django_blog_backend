@@ -8,4 +8,4 @@ class TagBlog(models.Model):
     blog_id = models.ForeignKey(Blog, on_delete = models.PROTECT)
     
     def __str__(self):
-        return f"id: {self.id}, tag_id: {self.blog_id.id}, blog_id: {self.blog_id.id}"
+        return f"id: {self.id}, tag_id: {self.tag_id.id}, blog_id: {self.blog_id.id}, tag_title: {self.tag_id.title}"
