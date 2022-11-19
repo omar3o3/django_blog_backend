@@ -3,6 +3,7 @@ from .models import Blog
 from users.models import NewUser
 from tagBlogs.serializers import TagBlogSerializer
 # from tags.serializers import TagListingField
+from tags.serializers import TagSerializer
 
 class CustomBlogSerializer(serializers.ModelSerializer):
     # user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -18,7 +19,8 @@ class CustomBlogSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
     # tagblog_set = serializers.StringRelatedField(many=True)
     tagblog_set = TagBlogSerializer(many=True, read_only=True)
-    # tags = TagListingField(many=True)
+    # title = serializers.SlugRelatedField(read_only=True, slug_field='title')
+    # tag_title = serializers.CharField(source='user.name', read_only=True)
 
     class Meta:
         model = Blog
