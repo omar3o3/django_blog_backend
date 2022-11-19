@@ -3,10 +3,12 @@ from .models import Tag
 # from users.models import NewUser
 
 class TagSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tag
+        # fields = ['title', 'content', 'id', 'user']
+    # fields = "__all__"
+    fields = ['title']
     
-    
-        class Meta:
-            model = Tag
-            # fields = ['title', 'content', 'id', 'user']
-            # fields = "__all__"
-            fields = ['title']
+# class TagListingField(serializers.RelatedField):
+#     def to_representation(self):
+#         return f"{self.title}"

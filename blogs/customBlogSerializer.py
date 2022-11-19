@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from .models import Blog
 from users.models import NewUser
+from tagBlogs.serializers import TagBlogSerializer
+# from tags.serializers import TagListingField
 
 class CustomBlogSerializer(serializers.ModelSerializer):
     # user = serializers.PrimaryKeyRelatedField(read_only=True)
@@ -14,7 +16,9 @@ class CustomBlogSerializer(serializers.ModelSerializer):
     # user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
     # tag = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
     user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
-    tagblog_set = serializers.StringRelatedField(many=True)
+    # tagblog_set = serializers.StringRelatedField(many=True)
+    tagblog_set = TagBlogSerializer(many=True, read_only=True)
+    # tags = TagListingField(many=True)
 
     class Meta:
         model = Blog

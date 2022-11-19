@@ -33,7 +33,7 @@ def test_run(request):
 
 @api_view(['GET'])
 def get_blogs(request):
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     all_blogs = Blog.objects.all()
     
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
@@ -42,6 +42,7 @@ def get_blogs(request):
 
 @api_view(['POST'])
 def create_post(request):    
+    # permission_classes = [IsAuthenticated]
     blog_data = request.data['blog_data']
     tag_data = request.data['tag_data']
     
