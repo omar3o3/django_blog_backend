@@ -5,10 +5,5 @@ from .models import Tag
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
-        # fields = ['title', 'content', 'id', 'user']
-    # fields = "__all__"
-    fields = ['title']
+        fields = ['title']
     
-# class TagListingField(serializers.RelatedField):
-#     def to_representation(self):
-#         return f"{self.title}"
