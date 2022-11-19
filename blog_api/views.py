@@ -2,7 +2,10 @@ from django.shortcuts import render
 
 from blogs.models import Blog
 from blogs.serializers import BlogSerializer
-from blogs.customBlogSerializer import CustomBlogSerializer
+
+from blogs.serializers import CustomBlogSerializer
+
+# from blogs.customBlogSerializer import CustomBlogSerializer
 
 from tags.models import Tag
 from tags.serializers import TagSerializer

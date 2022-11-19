@@ -6,6 +6,15 @@ from tags.models import Tag
 
 class TagBlogSerializer(serializers.ModelSerializer):
 
+    # tag_title = serializers.CharField(source='tag_id.title', read_only=True)
+    
+    class Meta:
+        model = TagBlog
+        # fields = ['tag_id', 'blog_id', 'tag_title']
+        fields = ['tag_id', 'blog_id']
+        
+class CustomTagBlogSerializer(serializers.ModelSerializer):
+
     tag_title = serializers.CharField(source='tag_id.title', read_only=True)
     
     class Meta:
