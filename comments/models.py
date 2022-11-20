@@ -5,5 +5,5 @@ from users.models import NewUser
 # Create your models here.
 class Comment(models.Model):
     user = models.ForeignKey(NewUser, on_delete = models.CASCADE)
-    content =  models.CharField(max_length = 150)
+    content =  models.CharField(max_length = 500)
     blog = models.ForeignKey(Blog, on_delete = models.CASCADE)
