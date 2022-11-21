@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 from blogs.models import Blog
 from blogs.serializers import BlogSerializer
-
 from blogs.serializers import CustomBlogSerializer
+from blogs.serializers import DetailedBlogSerializer
 
 from comments.serializers import CommentSerializer
 
@@ -74,14 +74,26 @@ def create_post(request):
 
 @api_view(['POST'])
 def create_comment(request):
-    # print('----------------------------------------------')
-    # print(request.data)
-    # print('----------------------------------------------')
     comment_serializer = CommentSerializer(data=request.data)
     if comment_serializer.is_valid():
         pass
         # print(comment_serializer)
         comment_post = comment_serializer.save()
         return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
-    return Response(comment_serializer.erros, status==status.HTTP_400_BAD_REQUEST)
-    
+    return Response(comment_serializer.erros, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def detailed_blog_view(request, blogId):
+    print('----------------------------------------------')
+    print(blogId)
+    print('----------------------------------------------')
+    requested_blog = Blog.objects.get(pk=blogId)
+    print(requested_blog)
+    print('----------------------------------------------')
+    detailed_blog = DetailedBlogSerializer(requested_blog)
+    # print(detailed_blog)
+    print('----------------------------------------------')
+    # if detailed_blog.is_valid():
+    if detailed_blog:
+        return Response(detailed_blog.data, status=status.HTTP_200_OK)
+    return Response(detailed_blog.errors, status=status.HTTP_400_BAD_REQUEST)
