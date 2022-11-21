@@ -84,16 +84,8 @@ def create_comment(request):
 
 @api_view(['GET'])
 def detailed_blog_view(request, blogId):
-    print('----------------------------------------------')
-    print(blogId)
-    print('----------------------------------------------')
     requested_blog = Blog.objects.get(pk=blogId)
-    print(requested_blog)
-    print('----------------------------------------------')
     detailed_blog = DetailedBlogSerializer(requested_blog)
-    # print(detailed_blog)
-    print('----------------------------------------------')
-    # if detailed_blog.is_valid():
     if detailed_blog:
         return Response(detailed_blog.data, status=status.HTTP_200_OK)
     return Response(detailed_blog.errors, status=status.HTTP_400_BAD_REQUEST)
