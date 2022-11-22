@@ -10,4 +10,4 @@ class Comment(models.Model):
     
     
     def __str__(self):
-        return f"id: {self.id}, blog: {self.blog.id}, user: {self.user.id.user_name}, content: {self.content}"
+        return f"id: {self.id}, blog: {self.blog.id}, user: {self.user.user_name}, content: {self.content}"
