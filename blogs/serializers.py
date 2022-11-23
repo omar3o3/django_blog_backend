@@ -17,7 +17,8 @@ class CustomBlogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Blog
-        fields = ['title', 'content', 'id', 'user', 'tagblog_set']
+        # fields = ['title', 'content', 'id', 'user', 'tagblog_set']
+        fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'nyc_time']
         
 class DetailedBlogSerializer(serializers.ModelSerializer):
     user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
@@ -26,4 +27,5 @@ class DetailedBlogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Blog
-        fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'comment_set']
+        # fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'comment_set']
+        fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'comment_set', 'nyc_time']

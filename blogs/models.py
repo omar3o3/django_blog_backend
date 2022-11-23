@@ -12,7 +12,13 @@ class Blog(models.Model):
     content = models.CharField(max_length = 2500)
     # date_posted = models.DateField(default = timezone.now)
     # likes = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
     
+    @property
+    def nyc_time(self):
+        utc_date = self.created_at
+        publish_date = timezone.localtime(utc_date)
+        return publish_date
     
     def __str__(self):
-        return f"id: {self.id}, title: {self.title}, content: {self.content} user: {NewUser.objects.get(pk=self.user.id).user_name}"
+        return f"id: {self.id}, title: {self.title}, content: {self.content[0:20]}... user: {NewUser.objects.get(pk=self.user.id).user_name} created_at: {self.created_at} , nyc_time: {self.nyc_time}"
