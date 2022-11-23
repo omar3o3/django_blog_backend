@@ -52,7 +52,7 @@ def create_post(request):
     blog_serializer = BlogSerializer(data=blog_data)
     if blog_serializer.is_valid():
         blog_post = blog_serializer.save()
-        print(tag_data)
+        # print(tag_data)
         for x in tag_data['tags']:
             tag_serializer = TagSerializer(data={'title': x})
             if tag_serializer.is_valid():
