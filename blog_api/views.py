@@ -34,6 +34,7 @@ def test_run(request):
     permission_classes = [IsAuthenticated]
     return Response('hi there')
 
+
 @api_view(['GET'])
 def get_blogs(request):
     permission_classes = [IsAuthenticated]
@@ -73,6 +74,7 @@ def create_post(request):
         return Response(status=status.HTTP_201_CREATED)
     return Response(blog_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['POST'])
 def create_comment(request):
     comment_serializer = CommentSerializer(data=request.data)
@@ -83,6 +85,7 @@ def create_comment(request):
         return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
     return Response(comment_serializer.erros, status=status.HTTP_400_BAD_REQUEST)
 
+
 @api_view(['GET'])
 def detailed_blog_view(request, blogId):
     requested_blog = Blog.objects.get(pk=blogId)
@@ -90,3 +93,35 @@ def detailed_blog_view(request, blogId):
     if detailed_blog:
         return Response(detailed_blog.data, status=status.HTTP_200_OK)
     return Response(detailed_blog.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def search_blog_user(request):
+    requested_user = request.data['searchContent']
+    found_user = NewUser.objects.get(user_name=requested_user)
+    if found_user:
+        bl = Blog.objects.filter(user = found_user).order_by('-created_at')
+        bl_data = CustomBlogSerializer(bl, many=True)
+        return Response(bl_data.data, status=status.HTTP_200_OK)
+    return Response({"message": 'user does not exist'}, status=status.HTTP_204_NO_CONTENT)
+
+
+@api_view(['POST'])
+def search_blog_tag(request):
+    requested_tag = request.data['searchContent']
+    found_tag = Tag.objects.get(title = requested_tag)
+    if found_tag:
+        # related_blogs = found_tag.tagblog_set.all().blog_id.order_by('-created_at')
+        related_blogs = Blog.objects.filter(tagblog__tag_id = found_tag).order_by('-created_at')
+        bl_data = CustomBlogSerializer(related_blogs, many=True)
+        return Response(bl_data.data, status=status.HTTP_200_OK)
+    return Response({"message": 'user does not exist'}, status=status.HTTP_204_NO_CONTENT)
+        
+        
+        
+    
+
+
+@api_view(['POST'])
+def search_blog_content():
+    pass
