@@ -5,7 +5,8 @@ from blogs.models import Blog
 # Create your models here.
 class TagBlog(models.Model):
     tag_id = models.ForeignKey(Tag, on_delete = models.PROTECT)
-    blog_id = models.ForeignKey(Blog, on_delete = models.PROTECT)
+    # blog_id = models.ForeignKey(Blog, on_delete = models.PROTECT)
+    blog_id = models.ForeignKey(Blog, on_delete = models.CASCADE)
     
     def __str__(self):
         return f"id: {self.id}, tag_id: {self.tag_id.id}, blog_id: {self.blog_id.id}, tag_title: {self.tag_id.title}"
