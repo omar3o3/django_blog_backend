@@ -108,15 +108,13 @@ def search_blog_user(request):
 
 @api_view(['POST'])
 def search_blog_tag(request):
-    requested_tag = request.data['searchContent']
-    found_tag = Tag.objects.get(title = requested_tag)
-    if found_tag:
-        # related_blogs = found_tag.tagblog_set.all().blog_id.order_by('-created_at')
-        related_blogs = Blog.objects.filter(tagblog__tag_id = found_tag).order_by('-created_at')
-        bl_data = CustomBlogSerializer(related_blogs, many=True)
+    requested_tags = request.data['searchContent']
+    tag_list = requested_tags.split()
+    found_blogs = Blog.objects.filter(tagblog__tag_id__title__in = tag_list).order_by('-created_at')
+    if found_blogs:
+        bl_data = CustomBlogSerializer(found_blogs, many=True)
         return Response(bl_data.data, status=status.HTTP_200_OK)
-    return Response({"message": 'user does not exist'}, status=status.HTTP_204_NO_CONTENT)
-        
+    return Response({"message": 'no blog with those tags'}, status=status.HTTP_204_NO_CONTENT)
         
         
     
