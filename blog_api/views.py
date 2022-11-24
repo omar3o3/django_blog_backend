@@ -121,5 +121,11 @@ def search_blog_tag(request):
 
 
 @api_view(['POST'])
-def search_blog_content():
-    pass
+def search_blog_content(request):
+    requested_content = request.data['searchContent']
+    found_blogs = Blog.objects.filter(content__contains = requested_content).order_by('-created_at')
+    if found_blogs:
+        bl_data = CustomBlogSerializer(found_blogs, many=True)
+        return Response(bl_data.data, status=status.HTTP_200_OK)
+    return Response({"message": 'no blog with those tags'}, status=status.HTTP_204_NO_CONTENT)
+    # print(found_blogs)
