@@ -103,7 +103,7 @@ def search_blog_user(request):
         bl = Blog.objects.filter(user = found_user).order_by('-created_at')
         bl_data = CustomBlogSerializer(bl, many=True)
         return Response(bl_data.data, status=status.HTTP_200_OK)
-    return Response({"message": 'user does not exist'}, status=status.HTTP_204_NO_CONTENT)
+    return Response({"message": 'user does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['POST'])
@@ -114,7 +114,8 @@ def search_blog_tag(request):
     if found_blogs:
         bl_data = CustomBlogSerializer(found_blogs, many=True)
         return Response(bl_data.data, status=status.HTTP_200_OK)
-    return Response({"message": 'no blog with those tags'}, status=status.HTTP_204_NO_CONTENT)
+    else:
+        return Response({'message': 'tag(s) not found'}, status=status.HTTP_404_NOT_FOUND)
         
         
     
@@ -127,5 +128,4 @@ def search_blog_content(request):
     if found_blogs:
         bl_data = CustomBlogSerializer(found_blogs, many=True)
         return Response(bl_data.data, status=status.HTTP_200_OK)
-    return Response({"message": 'no blog with those tags'}, status=status.HTTP_204_NO_CONTENT)
-    # print(found_blogs)
+    return Response({'message': 'no blog with that content found'}, status=status.HTTP_404_NOT_FOUND)
