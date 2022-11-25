@@ -15,20 +15,6 @@ from .serializers import CustomObtainPairSerializer
 from rest_framework.views import APIView
 
 # Create your views here.
-    
-# @api_view(['POST'])
-# def create_user(request):
-#     rq = request.data
-#     user = NewUser.objects.create(
-#         user_name= rq['user_name'],
-#         email = rq['email'],
-#         first_name = rq['first_name'],
-#         last_name = rq['last_name'],
-#         )
-#     user.set_password(rq['password'])
-#     user.save()
-#     serializer = UserSerializer(user)
-#     return Response(serializer.data)
 
 @api_view(['POST'])
 def create_user(request):
@@ -38,6 +24,7 @@ def create_user(request):
         user = serializer.save()
         if user:
             json = serializer.data
+            json["user_id"] = user.id
             return Response(json, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
