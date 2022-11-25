@@ -32,7 +32,7 @@ from rest_framework.views import APIView
 
 @api_view(['POST'])
 def create_user(request):
-    permission_classes = [AllowAny]
+    # permission_classes = [AllowAny]
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
         user = serializer.save()
