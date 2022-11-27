@@ -47,7 +47,9 @@ def twitter_scrap(request):
         trending_topics = soup.find_all('div', class_="css-901oao r-1nao33i r-37j5jr r-a023e6 r-b88u0q r-rjixqe r-1bymd8e r-bcqeeo r-qvutc0")
         for x in trending_topics:
             titles = x.find("span", recursive=False)
-            obj = {"title": titles.text, "link": f"https://twitter.com/search?q={titles.text}&src=trend_click&vertical=trends"}
+            # x2 = x[1:] if x.startswith('#') else x
+            link = titles.text[1:] if titles.text.startswith('#') else titles.text
+            obj = {"title": titles.text, "link": f"https://twitter.com/search?q={link}&src=trend_click&vertical=trends"}
             json.append(obj)
     except:
         driver.quit()
