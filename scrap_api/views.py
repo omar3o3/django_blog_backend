@@ -51,5 +51,5 @@ def twitter_scrap(request):
             json.append(obj)
     except:
         driver.quit()
-        
+    driver.quit()
     return Response(json, status=status.HTTP_200_OK)
