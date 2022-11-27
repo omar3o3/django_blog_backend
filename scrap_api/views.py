@@ -23,7 +23,7 @@ def reddit_scrap(request):
     a_tag = soup.find_all('a', class_="SQnoC3ObvgnGjWt90zD9Z _2INHSNB8V5eaWp4P0rY_mE")
     json = []
     for x in a_tag:
-        base_reddit_url = 'www.reddit.com'
+        base_reddit_url = 'https://www.reddit.com'
         trending_topic = {"link": base_reddit_url + x['href'], "title": x.string}
         json.append(trending_topic)
     return Response(json, status=status.HTTP_200_OK)
@@ -34,7 +34,6 @@ def twitter_scrap(request):
     opts = Options()
     opts.headless = True
     driver = webdriver.Firefox(service=Service('./geckodriver'), options=opts)
-    # wait = WebDriverWait(driver, 5)
     twitter_url = "https://twitter.com/explore/tabs/trending"
     driver.get(twitter_url)
     json = []
@@ -47,7 +46,6 @@ def twitter_scrap(request):
         trending_topics = soup.find_all('div', class_="css-901oao r-1nao33i r-37j5jr r-a023e6 r-b88u0q r-rjixqe r-1bymd8e r-bcqeeo r-qvutc0")
         for x in trending_topics:
             titles = x.find("span", recursive=False)
-            # x2 = x[1:] if x.startswith('#') else x
             link = titles.text[1:] if titles.text.startswith('#') else titles.text
             obj = {"title": titles.text, "link": f"https://twitter.com/search?q={link}&src=trend_click&vertical=trends"}
             json.append(obj)
