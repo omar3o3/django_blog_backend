@@ -5,6 +5,15 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
 
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
+from selenium import webdriver
+
+from selenium.webdriver.firefox.service import Service
+
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
 @api_view(['GET'])
 def reddit_scrap(request):
     headers = {'User-Agent': 'Mozilla/5.0'}
@@ -18,4 +27,29 @@ def reddit_scrap(request):
         trending_topic = {"link": base_reddit_url + x['href'], "title": x.string}
         json.append(trending_topic)
     return Response(json, status=status.HTTP_200_OK)
-    
+
+
+@api_view(['GET'])
+def twitter_scrap(request):
+    opts = Options()
+    opts.headless = True
+    driver = webdriver.Firefox(service=Service('./geckodriver'), options=opts)
+    # wait = WebDriverWait(driver, 5)
+    twitter_url = "https://twitter.com/explore/tabs/trending"
+    driver.get(twitter_url)
+    json = []
+    try:
+        main_div = WebDriverWait(driver , 15).until(
+            EC.presence_of_all_elements_located((By.XPATH, "//div[@data-testid='trend']"))
+        )
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        driver.quit()
+        trending_topics = soup.find_all('div', class_="css-901oao r-1nao33i r-37j5jr r-a023e6 r-b88u0q r-rjixqe r-1bymd8e r-bcqeeo r-qvutc0")
+        for x in trending_topics:
+            titles = x.find("span", recursive=False)
+            obj = {"title": titles.text, "link": f"https://twitter.com/search?q={titles.text}&src=trend_click&vertical=trends"}
+            json.append(obj)
+    except:
+        driver.quit()
+        
+    return Response(json, status=status.HTTP_200_OK)

@@ -1,3 +1,4 @@
 *.pyc
 rambler/settings.py
 venv
+geckodriver
