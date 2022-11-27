@@ -2,3 +2,5 @@
 rambler/settings.py
 venv
 geckodriver
+geckodriver.log
+db.sqlite3
