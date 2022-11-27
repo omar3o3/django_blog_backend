@@ -516,3 +516,43 @@ DevTools listening on ws://127.0.0.1:60637/devtools/browser/38fa0cea-8f27-479b-b
 1669518409202	Marionette	INFO	Stopped listening on port 60644
 JavaScript error: https://abs.twimg.com/responsive-web/client-web/vendor.352d2fb9.js, line 74: TypeError: can't access dead object
 JavaScript error: resource://services-settings/Utils.jsm, line 239: TypeError: NetworkError: Network request failed
+1669519036568	geckodriver	INFO	Listening on 127.0.0.1:60856
+1669519037102	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "--remote-debugging-port" "60857" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/kb/k863khw17278s74mr9j0bp080000gn/T/rust_mozprofileNcGRLt"
+*** You are running in headless mode.
+2022-11-26 22:17:17.883 plugin-container[95743:3683101] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-11-26 22:17:17.884 plugin-container[95743:3683101] nil host used in call to allowsAnyHTTPSCertificateForHost:
+1669519037897	Marionette	INFO	Marionette enabled
+1669519037919	Marionette	INFO	Listening on port 60864
+Read port: 60864
+2022-11-26 22:17:18.082 plugin-container[95743:3683101] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-11-26 22:17:18.082 plugin-container[95743:3683101] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-11-26 22:17:18.082 plugin-container[95743:3683100] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-11-26 22:17:18.082 plugin-container[95743:3683100] nil host used in call to allowsAnyHTTPSCertificateForHost:
+WebDriver BiDi listening on ws://127.0.0.1:60857
+1669519038733	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/kb/k863khw17278s74mr9j0bp080000gn/T/rust_mozprofileNcGRLt/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60857/devtools/browser/bb014c96-c9c3-4a2f-b9a7-1c00089d999e
+1669519045577	Marionette	INFO	Stopped listening on port 60864
+JavaScript error: https://abs.twimg.com/responsive-web/client-web/vendor.352d2fb9.js, line 74: TypeError: can't access dead object
+JavaScript error: resource://services-settings/Utils.jsm, line 239: TypeError: NetworkError: Network request failed
+1669519046574	geckodriver	INFO	Listening on 127.0.0.1:60921
+1669519047083	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "--remote-debugging-port" "60922" "--remote-allow-hosts" "localhost" "-foreground" "-no-remote" "-profile" "/var/folders/kb/k863khw17278s74mr9j0bp080000gn/T/rust_mozprofileh2xS7O"
+*** You are running in headless mode.
+2022-11-26 22:17:27.655 plugin-container[95751:3683484] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-11-26 22:17:27.656 plugin-container[95751:3683484] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-11-26 22:17:27.661 plugin-container[95751:3683484] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-11-26 22:17:27.661 plugin-container[95751:3683484] nil host used in call to allowsAnyHTTPSCertificateForHost:
+2022-11-26 22:17:27.661 plugin-container[95751:3683491] nil host used in call to allowsSpecificHTTPSCertificateForHost
+2022-11-26 22:17:27.662 plugin-container[95751:3683491] nil host used in call to allowsAnyHTTPSCertificateForHost:
+1669519047689	Marionette	INFO	Marionette enabled
+1669519047734	Marionette	INFO	Listening on port 60929
+Read port: 60929
+WebDriver BiDi listening on ws://127.0.0.1:60922
+1669519048286	RemoteAgent	WARN	TLS certificate errors will be ignored for this session
+[GFX1-]: RenderCompositorSWGL failed mapping default framebuffer, no dt
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new NotFoundError("Could not open the file at /var/folders/kb/k863khw17278s74mr9j0bp080000gn/T/rust_mozprofileh2xS7O/search.json.mozlz4", (void 0)))
+DevTools listening on ws://127.0.0.1:60922/devtools/browser/846ed477-7b49-4de4-b59c-24a0ac2dbdba
+1669519061014	Marionette	INFO	Stopped listening on port 60929
+JavaScript error: https://abs.twimg.com/responsive-web/client-web/vendor.352d2fb9.js, line 74: TypeError: can't access dead object
+JavaScript error: resource://services-settings/Utils.jsm, line 239: TypeError: NetworkError: Network request failed
