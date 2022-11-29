@@ -10,5 +10,6 @@ urlpatterns = [
     path('detailedBlogView/<int:blogId>', views.detailed_blog_view),
     path('search-user', views.search_blog_user),
     path('search-tag', views.search_blog_tag),
-    path('search-blog-content', views.search_blog_content)
+    path('search-blog-content', views.search_blog_content),
+    path('user-history/<int:userId>', views.user_history),
 ]

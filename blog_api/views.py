@@ -19,7 +19,8 @@ from comments.models import Comment
 from users.models import NewUser
 
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+# from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 
 from rest_framework import status, viewsets, filters, generics
 # permissions
@@ -29,15 +30,14 @@ from rest_framework.parsers import MultiPartParser, FormParser
 # Create your views here.
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def test_run(request):
-    # permission_classes = [permissions.IsAuthenticated]
-    permission_classes = [IsAuthenticated]
     return Response('hi there')
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def get_blogs(request):
-    permission_classes = [IsAuthenticated]
     # all_blogs = Blog.objects.all()
     all_blogs = Blog.objects.order_by('-created_at')
     
@@ -46,8 +46,8 @@ def get_blogs(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_post(request):    
-    permission_classes = [IsAuthenticated]
     blog_data = request.data['blog_data']
     tag_data = request.data['tag_data']
     
@@ -76,6 +76,7 @@ def create_post(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def create_comment(request):
     comment_serializer = CommentSerializer(data=request.data)
     if comment_serializer.is_valid():
@@ -87,6 +88,7 @@ def create_comment(request):
 
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def detailed_blog_view(request, blogId):
     requested_blog = Blog.objects.get(pk=blogId)
     detailed_blog = DetailedBlogSerializer(requested_blog)
@@ -96,6 +98,7 @@ def detailed_blog_view(request, blogId):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def search_blog_user(request):
     requested_user = request.data['searchContent']
     found_user = NewUser.objects.get(user_name=requested_user)
@@ -107,6 +110,7 @@ def search_blog_user(request):
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def search_blog_tag(request):
     requested_tags = request.data['searchContent']
     tag_list = requested_tags.split()
@@ -116,12 +120,10 @@ def search_blog_tag(request):
         return Response(bl_data.data, status=status.HTTP_200_OK)
     else:
         return Response({'message': 'tag(s) not found'}, status=status.HTTP_404_NOT_FOUND)
-        
-        
-    
 
 
 @api_view(['POST'])
+@permission_classes([IsAuthenticated])
 def search_blog_content(request):
     requested_content = request.data['searchContent']
     found_blogs = Blog.objects.filter(content__contains = requested_content).order_by('-created_at')
@@ -129,3 +131,13 @@ def search_blog_content(request):
         bl_data = CustomBlogSerializer(found_blogs, many=True)
         return Response(bl_data.data, status=status.HTTP_200_OK)
     return Response({'message': 'no blog with that content found'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_history(request, userId):
+    all_blogs = Blog.objects.filter(user = userId)
+    blog_serializer = CustomBlogSerializer(all_blogs, many = True)
+    if all_blogs:
+        return Response(blog_serializer.data, status=status.HTTP_200_OK)
+    return Response({'message': 'user has not posted any content'}, status=status.HTTP_400_BAD_REQUEST)
+        
