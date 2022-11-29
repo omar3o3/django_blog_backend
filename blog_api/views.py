@@ -6,6 +6,7 @@ from blogs.serializers import CustomBlogSerializer
 from blogs.serializers import DetailedBlogSerializer
 
 from comments.serializers import CommentSerializer
+from comments.serializers import CustomCommentSerializer
 
 from tags.models import Tag
 from tags.serializers import TagSerializer
@@ -83,7 +84,9 @@ def create_comment(request):
         pass
         # print(comment_serializer)
         comment_post = comment_serializer.save()
-        return Response(comment_serializer.data, status=status.HTTP_201_CREATED)
+        comment_data = comment_serializer.data
+        # comment_data['user'] = NewUser.objects.get()
+        return Response(comment_data, status=status.HTTP_201_CREATED)
     return Response(comment_serializer.erros, status=status.HTTP_400_BAD_REQUEST)
 
 

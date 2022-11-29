@@ -6,3 +6,10 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['user', 'content', 'blog']
+        
+        
+class CustomCommentSerializer(serializers.ModelSerializer):
+    user = serializers.SlugRelatedField(read_only=True, slug_field='user_name')
+    class Meta:
+        model = Comment
+        fields = ['user', 'content', 'blog']
