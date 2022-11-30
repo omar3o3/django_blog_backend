@@ -85,7 +85,8 @@ def create_comment(request):
         # print(comment_serializer)
         comment_post = comment_serializer.save()
         comment_data = comment_serializer.data
-        # comment_data['user'] = NewUser.objects.get()
+        # print(request.data)
+        comment_data['user'] = NewUser.objects.get(pk=request.data['user']).user_name
         return Response(comment_data, status=status.HTTP_201_CREATED)
     return Response(comment_serializer.erros, status=status.HTTP_400_BAD_REQUEST)
 

@@ -36,5 +36,5 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['user_name', 'first_name', 'last_name']
     
     def __str__(self):
-        return f"id: {self.id}, firstname: {self.first_name}, lastname: {self.last_name}, email: {self.email}, username: {self.user_name}"
+        return f"id: {self.id}, first_name: {self.first_name}, last_name: {self.last_name}, email: {self.email}, user_name: {self.user_name}"
         # return f"id: {self.id}, firstname: {self.first_name}, lastname: {self.last_name}, email: {self.email}, username: {self.user_name}, staff: {self.is_staff}, superuser: {self.is_superuser}"
