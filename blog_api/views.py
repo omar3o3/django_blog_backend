@@ -18,6 +18,7 @@ from tagBlogs.serializers import TagBlogSerializer
 from comments.models import Comment
 
 from users.models import NewUser
+from users.serializers import UserSerializer
 
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
@@ -143,5 +144,22 @@ def user_history(request, userId):
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
     if all_blogs:
         return Response(blog_serializer.data, status=status.HTTP_200_OK)
-    return Response({'message': 'user has not posted any content'}, status=status.HTTP_400_BAD_REQUEST)
-        
+    return Response({'message': 'user has not posted any content'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def account_info(request , userId):
+    user = NewUser.objects.get(pk=userId)
+    user_serializer = UserSerializer(user)
+    if user:
+        return Response(user_serializer.data, status=status.HTTP_200_OK)
+    return Response({'message': 'user does not exist'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def patch_user(request, userID):
+    pass
+    # serializer = CommentSerializer(comment, data=request.data, partial=True)
+    
