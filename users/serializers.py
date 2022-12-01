@@ -28,6 +28,13 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
     
 
+class CustomUserSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = NewUser
+        fields = ['email' , 'user_name' , 'first_name', 'last_name', 'blog_count', 'comment_count']
+    
+
 class CustomObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

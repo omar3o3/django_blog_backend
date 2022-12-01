@@ -18,8 +18,6 @@ class CustomUserManager(BaseUserManager):
         other_fields.setdefault('is_superuser', True)
         
         return self.create_user(email, user_name, first_name, last_name, password, **other_fields)
-        
-        
 
 
 class NewUser(AbstractBaseUser, PermissionsMixin):
@@ -34,6 +32,16 @@ class NewUser(AbstractBaseUser, PermissionsMixin):
     
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['user_name', 'first_name', 'last_name']
+    
+    @property
+    def blog_count(self):
+        return len(self.blog_set.all())
+    
+    
+    @property
+    def comment_count(self):
+        return len(self.comment_set.all())
+        
     
     def __str__(self):
         return f"id: {self.id}, first_name: {self.first_name}, last_name: {self.last_name}, email: {self.email}, user_name: {self.user_name}"

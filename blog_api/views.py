@@ -19,6 +19,7 @@ from comments.models import Comment
 
 from users.models import NewUser
 from users.serializers import UserSerializer
+from users.serializers import CustomUserSerializer
 
 from rest_framework.response import Response
 # from rest_framework.decorators import api_view
@@ -140,7 +141,7 @@ def search_blog_content(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_history(request, userId):
-    all_blogs = Blog.objects.filter(user = userId)
+    all_blogs = Blog.objects.filter(user = userId).order_by('-created_at')
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
     if all_blogs:
         return Response(blog_serializer.data, status=status.HTTP_200_OK)
@@ -151,7 +152,8 @@ def user_history(request, userId):
 @permission_classes([IsAuthenticated])
 def account_info(request , userId):
     user = NewUser.objects.get(pk=userId)
-    user_serializer = UserSerializer(user)
+    # user_serializer = UserSerializer(user)
+    user_serializer = CustomUserSerializer(user)
     if user:
         return Response(user_serializer.data, status=status.HTTP_200_OK)
     return Response({'message': 'user does not exist'}, status=status.HTTP_404_NOT_FOUND)
