@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Blog
+from .models import UserFollowing
 from users.models import NewUser
 
 from tagBlogs.serializers import TagBlogSerializer
@@ -31,3 +32,10 @@ class DetailedBlogSerializer(serializers.ModelSerializer):
         model = Blog
         # fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'comment_set']
         fields = ['title', 'content', 'id', 'user', 'tagblog_set', 'comment_set', 'nyc_time']
+        
+
+class UserFollowingSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = UserFollowing
+        fields = ['user_id' , 'following_user_id']

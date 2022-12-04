@@ -5,6 +5,9 @@ from blogs.serializers import BlogSerializer
 from blogs.serializers import CustomBlogSerializer
 from blogs.serializers import DetailedBlogSerializer
 
+from blogs.models import UserFollowing
+from blogs.serializers import UserFollowingSerializer
+
 from comments.serializers import CommentSerializer
 from comments.serializers import CustomCommentSerializer
 
@@ -43,7 +46,6 @@ def test_run(request):
 def get_blogs(request):
     # all_blogs = Blog.objects.all()
     all_blogs = Blog.objects.order_by('-created_at')
-    
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
     return Response(blog_serializer.data)
 
@@ -83,7 +85,7 @@ def create_post(request):
 def create_comment(request):
     comment_serializer = CommentSerializer(data=request.data)
     if comment_serializer.is_valid():
-        pass
+        # pass
         # print(comment_serializer)
         comment_post = comment_serializer.save()
         comment_data = comment_serializer.data
@@ -161,7 +163,30 @@ def account_info(request , userId):
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
-def patch_user(request, userID):
+def patch_user(request, userId):
     pass
     # serializer = CommentSerializer(comment, data=request.data, partial=True)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_following(request):
+    # pass
+    user_following_serializer = UserFollowingSerializer(data=request.data)
+    if user_following_serializer.is_valid():
+        user_following = user_following_serializer.save()
+        return Response(user_following_serializer.data, status=status.HTTP_200_OK)
+    return Response({'message': 'could not create following association'}, status=status.HTTP_400_BAD_REQUEST)
+
     
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_following_posts(request, userId):
+    user = NewUser.objects.get(pk=userId)
+    user_following = user.following.all()
+    users_being_followed = NewUser.objects.filter(followers__in=user_following)
+    found_blogs = Blog.objects.filter(user__in=users_being_followed).order_by('-created_at')
+    if found_blogs:
+        blog_serializer = CustomBlogSerializer(found_blogs, many = True)
+        return Response(blog_serializer.data, status=status.HTTP_200_OK)
+    return Response({'message': 'user does not follow any users or those users have not posted anything'}, status=status.HTTP_404_NOT_FOUND)
