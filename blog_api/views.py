@@ -195,10 +195,19 @@ def get_following_posts(request, userId):
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
 def view_other_user_history(request, user_name):
-    # user = NewUser.objects.get(user_name=user_name)
     all_blogs = Blog.objects.filter(user__user_name = user_name).order_by('-created_at')
     if all_blogs.exists():
         blog_serializer = CustomBlogSerializer(all_blogs , many = True)
         return Response(blog_serializer.data, status=status.HTTP_200_OK)
     return Response({'message': 'user has not posted anything'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+# @permission_classes([IsAuthenticated])
+def view_other_account_info(request , user_name):
+    user = NewUser.objects.get(user_name=user_name)
+    # user_serializer = UserSerializer(user)
+    user_serializer = CustomUserSerializer(user)
+    if user:
+        return Response(user_serializer.data, status=status.HTTP_200_OK)
+    return Response({'message': 'user does not exist'}, status=status.HTTP_404_NOT_FOUND)
     
