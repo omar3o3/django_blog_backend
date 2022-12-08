@@ -16,4 +16,5 @@ urlpatterns = [
     path('patch-user/<int:userId>', views.patch_user),
     path('get-following-posts/<int:userId>', views.get_following_posts),
     path('create-following', views.create_following),
+    path('view-other-user-history/<str:user_name>', views.view_other_user_history),
 ]
