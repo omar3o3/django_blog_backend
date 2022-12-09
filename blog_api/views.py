@@ -1,3 +1,4 @@
+from ast import Pass
 from django.shortcuts import render
 
 from blogs.models import Blog
@@ -171,12 +172,20 @@ def patch_user(request, userId):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_following(request):
-    # pass
     user_following_serializer = UserFollowingSerializer(data=request.data)
     if user_following_serializer.is_valid():
         user_following = user_following_serializer.save()
         return Response(user_following_serializer.data, status=status.HTTP_200_OK)
     return Response({'message': 'could not create following association'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def delete_following(request):
+    current_user = request.data.logged_in_user_name
+    target_user = request.data.target_user_name
+    following_association = UserFollowing.objects.get(user_id__user_name = current_user, following_user_id__user_name=target_user)
+    following_association.delete()
 
     
 @api_view(['GET'])
