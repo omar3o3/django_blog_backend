@@ -17,5 +17,5 @@ urlpatterns = [
     path('get-following-posts/<int:userId>', views.get_following_posts),
     path('create-following', views.create_following),
     path('view-other-user-history/<str:user_name>', views.view_other_user_history),
-    path('view-other-account-info/<str:user_name>', views.view_other_account_info),
+    path('view-other-account-info/<str:user_name>/<int:loggedInUserId>', views.view_other_account_info),
 ]

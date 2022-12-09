@@ -203,11 +203,15 @@ def view_other_user_history(request, user_name):
 
 @api_view(['GET'])
 # @permission_classes([IsAuthenticated])
-def view_other_account_info(request , user_name):
+def view_other_account_info(request , user_name , loggedInUserId):
     user = NewUser.objects.get(user_name=user_name)
     # user_serializer = UserSerializer(user)
     user_serializer = CustomUserSerializer(user)
     if user:
-        return Response(user_serializer.data, status=status.HTTP_200_OK)
+        user_data = user_serializer.data
+        user_followers = user.followers.all()
+        logged_in_user_follows_requested_user = user_followers.filter(user_id = loggedInUserId).exists()
+        user_data['followed_by_user'] = logged_in_user_follows_requested_user
+        return Response(user_data, status=status.HTTP_200_OK)
     return Response({'message': 'user does not exist'}, status=status.HTTP_404_NOT_FOUND)
     
