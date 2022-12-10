@@ -172,20 +172,46 @@ def patch_user(request, userId):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_following(request):
-    user_following_serializer = UserFollowingSerializer(data=request.data)
-    if user_following_serializer.is_valid():
-        user_following = user_following_serializer.save()
-        return Response(user_following_serializer.data, status=status.HTTP_200_OK)
-    return Response({'message': 'could not create following association'}, status=status.HTTP_400_BAD_REQUEST)
+    # pass
+    # user_following_serializer = UserFollowingSerializer(data=request.data)
+    # if user_following_serializer.is_valid():
+    #     user_following = user_following_serializer.save()
+    #     return Response(user_following_serializer.data, status=status.HTTP_200_OK)
+    # return Response({'message': 'could not create following association'}, status=status.HTTP_400_BAD_REQUEST)
+    current_user_name = request.data['logged_in_user_name']
+    target_user_name = request.data['target_user_name']
+    # print('-'*10)
+    # print(current_user_name)
+    # print(target_user_name)
+    # print('-'*10)
+    current_user = NewUser.objects.get(user_name = current_user_name)
+    target_user = NewUser.objects.get(user_name = target_user_name)
+    # print('-'*10)
+    # print(current_user)
+    # print(target_user)
+    # print('-'*10)
+    if current_user and target_user:
+        following_association = UserFollowing.objects.create(user_id = current_user , following_user_id = target_user)
+        return Response({'message': 'successfully created following association'}, status=status.HTTP_200_OK)
+    return Response({'message': 'one of the users dont exist'}, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
-def delete_following(request):
-    current_user = request.data.logged_in_user_name
-    target_user = request.data.target_user_name
-    following_association = UserFollowing.objects.get(user_id__user_name = current_user, following_user_id__user_name=target_user)
-    following_association.delete()
+def delete_following(request, logged_in_user_name, target_user_name):
+    # current_user = request.data.logged_in_user_name
+    # target_user = request.data.target_user_name
+    # print('-'*10)
+    # print(request.data)
+    # print(current_user)
+    # print(target_user)
+    # print('-'*10)
+    following_association = UserFollowing.objects.get(user_id__user_name = logged_in_user_name, following_user_id__user_name=target_user_name)
+    if following_association:
+        # print(following_association)
+        following_association.delete()
+        return Response({'message': 'successfully deleted'}, status=status.HTTP_204_NO_CONTENT)
+    return Response({'message': 'could not complete request'}, status=status.HTTP_400_BAD_REQUEST)
 
     
 @api_view(['GET'])
