@@ -9,4 +9,4 @@ The purpose of this projec was to create a social media site inspired by famous 
 The tech stack for the front end of Rambler includes react, material ui, axios, 
 react-router-dom, and jwt-decode.
 
-For a walkthrough of this project, please follow this link: {insert link later}
+<!-- For a walkthrough of this project, please follow this link: {insert link later} -->
