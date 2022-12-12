@@ -45,6 +45,7 @@ def test_run(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_blogs(request):
+    """"used to view all blogs on explore page"""
     # all_blogs = Blog.objects.all()
     all_blogs = Blog.objects.order_by('-created_at')
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
@@ -54,11 +55,14 @@ def get_blogs(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_post(request):    
+    """used to create a new post"""
     blog_data = request.data['blog_data']
     tag_data = request.data['tag_data']
     
     blog_serializer = BlogSerializer(data=blog_data)
     if blog_serializer.is_valid():
+        """if the blog serializer is valid then it will create a new tag for every tag in the request,
+        and if it already exists it will create a new tagblog model for that tag"""
         blog_post = blog_serializer.save()
         # print(tag_data)
         for x in tag_data['tags']:
@@ -84,6 +88,7 @@ def create_post(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_comment(request):
+    """creates a new comment and adds a user key to the comment serializer dict with the user who posted it"""
     comment_serializer = CommentSerializer(data=request.data)
     if comment_serializer.is_valid():
         # pass
@@ -99,6 +104,7 @@ def create_comment(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def detailed_blog_view(request, blogId):
+    """Get detailed data about a blog using the detailedblogserializer"""
     requested_blog = Blog.objects.get(pk=blogId)
     detailed_blog = DetailedBlogSerializer(requested_blog)
     if detailed_blog:
@@ -109,6 +115,7 @@ def detailed_blog_view(request, blogId):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def search_blog_user(request):
+    """search for blogs posted by the requested user"""
     requested_user = request.data['searchContent']
     found_user = NewUser.objects.get(user_name=requested_user)
     if found_user:
@@ -121,6 +128,7 @@ def search_blog_user(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def search_blog_tag(request):
+    """search for blogs who have the requested tags associated with them"""
     requested_tags = request.data['searchContent']
     tag_list = requested_tags.split()
     found_blogs = Blog.objects.filter(tagblog__tag_id__title__in = tag_list).order_by('-created_at')
@@ -134,6 +142,7 @@ def search_blog_tag(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def search_blog_content(request):
+    """search for blogs who have the requested data somewhere in the content column of the blog"""
     requested_content = request.data['searchContent']
     found_blogs = Blog.objects.filter(content__contains = requested_content).order_by('-created_at')
     if found_blogs:
@@ -144,6 +153,7 @@ def search_blog_content(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def user_history(request, userId):
+    """used for when users view their own profile, gets all their blogs and tags"""
     all_blogs = Blog.objects.filter(user = userId).order_by('-created_at')
     blog_serializer = CustomBlogSerializer(all_blogs, many = True)
     if all_blogs:
@@ -154,6 +164,7 @@ def user_history(request, userId):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def account_info(request , userId):
+    """for when a user views another their own profile, gets data such as username, first and last name, email, and blogs/comments posted"""
     user = NewUser.objects.get(pk=userId)
     user_serializer = CustomUserSerializer(user)
     if user:
@@ -164,12 +175,14 @@ def account_info(request , userId):
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
 def patch_user(request, userId):
+    """meant to be used for when a user updated their account such as username, first and last name"""
     pass
 
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_following(request):
+    """create a following association between 2 users, the current user is the user_id who is following the target_user"""
     current_user_name = request.data['logged_in_user_name']
     target_user_name = request.data['target_user_name']
     current_user = NewUser.objects.get(user_name = current_user_name)
@@ -183,6 +196,7 @@ def create_following(request):
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def delete_following(request, logged_in_user_name, target_user_name):
+    """delete following association between the logged in user, who is unfollowing the target user"""
     following_association = UserFollowing.objects.get(user_id__user_name = logged_in_user_name, following_user_id__user_name=target_user_name)
     if following_association:
         following_association.delete()
@@ -193,6 +207,7 @@ def delete_following(request, logged_in_user_name, target_user_name):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def get_following_posts(request, userId):
+    """when a user views the home page, this returns all the posts from the people they follow"""
     user = NewUser.objects.get(pk=userId)
     user_following = user.following.all()
     users_being_followed = NewUser.objects.filter(followers__in=user_following)
@@ -206,6 +221,8 @@ def get_following_posts(request, userId):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def view_other_user_history(request, user_name):
+    """when a user views the profile of another user this returns all posts that user posted -- different
+    from when user views their own profile because i do not have access to the user id, only username"""
     all_blogs = Blog.objects.filter(user__user_name = user_name).order_by('-created_at')
     if all_blogs.exists():
         blog_serializer = CustomBlogSerializer(all_blogs , many = True)
@@ -215,6 +232,9 @@ def view_other_user_history(request, user_name):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def view_other_account_info(request , user_name , loggedInUserId):
+    """when a user views the profile of another user this returns user info such as username, first
+    and last name, email, blog and comments posted -- different from when user views their own profile 
+    because i do not have access to the user id, only username"""
     user = NewUser.objects.get(user_name=user_name)
     user_serializer = CustomUserSerializer(user)
     if user:
